@@ -11,6 +11,7 @@ import type {
   GitHubContributions,
   GitHubLanguageMap,
   GitHubRepository,
+  GitHubSearchResponse,
   GitHubUser,
 } from './github-cli.service.types'
 
@@ -181,5 +182,40 @@ export class GitHubCliService {
 
   getCurrentYear(): number {
     return CURRENT_YEAR
+  }
+
+  /** YYYY-MM-DD range matching `getContributions` (current UTC year start → now). */
+  getContributionYearDateRangeYmd(): { fromYmd: string; toYmd: string } {
+    return {
+      fromYmd: CONTRIBUTIONS_FROM.slice(0, 10),
+      toYmd: new Date().toISOString().slice(0, 10),
+    }
+  }
+
+  /**
+   * PRs opened by the user in the date range (Search API). Includes private repos
+   * visible to the token — closer to “all my PRs” than `contributionsCollection.totalPullRequestContributions`.
+   */
+  async countPullRequestsOpenedByAuthorInRange(
+    username: string,
+    fromYmd: string,
+    toYmd: string,
+  ): Promise<number> {
+    const q = `author:${username} type:pr created:${fromYmd}..${toYmd}`
+    return this.searchCount('/search/issues', q)
+  }
+
+  private async searchCount(path: string, query: string): Promise<number> {
+    const response = await runGhApi<GitHubSearchResponse>([
+      path,
+      '--method',
+      'GET',
+      '-f',
+      `q=${query}`,
+      '-f',
+      'per_page=1',
+    ])
+
+    return response.total_count
   }
 }

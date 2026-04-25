@@ -40,3 +40,7 @@ export interface GitHubContributionRange {
   from: string
   to: string
 }
+
+export interface GitHubSearchResponse {
+  total_count: number
+}

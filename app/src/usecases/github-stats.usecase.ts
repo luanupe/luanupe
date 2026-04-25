@@ -22,10 +22,16 @@ export class GitHubStatsUsecase {
   private async buildStats(): Promise<GitHubStats> {
     const startedAt = process.hrtime.bigint()
     debugLog('github stats build started')
-    const [user, repositories, contributions] = await Promise.all([
+    const prWindow = this.github.getContributionYearDateRangeYmd()
+    const [user, repositories, contributions, pullRequestsFromSearch] = await Promise.all([
       this.github.getAuthenticatedUser(),
       this.github.listRepositories(),
       this.github.getContributions(config.GITHUB_USERNAME),
+      this.github.countPullRequestsOpenedByAuthorInRange(
+        config.GITHUB_USERNAME,
+        prWindow.fromYmd,
+        prWindow.toYmd,
+      ),
     ])
 
     debugLog('github stats dependencies loaded', {
@@ -68,7 +74,7 @@ export class GitHubStatsUsecase {
         total: contributionsTotal,
         commits: contributions.totalCommitContributions,
         issues: contributions.totalIssueContributions,
-        pullRequests: contributions.totalPullRequestContributions,
+        pullRequests: pullRequestsFromSearch,
         pullRequestReviews: contributions.totalPullRequestReviewContributions,
         repositories: contributions.totalRepositoryContributions,
         restricted: contributions.restrictedContributionsCount,
