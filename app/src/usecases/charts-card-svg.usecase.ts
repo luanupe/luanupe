@@ -12,7 +12,7 @@ export class ChartsCardSvgUsecase {
     private readonly svgCardService = new SvgCardService(),
   ) {}
 
-  execute(options: GitHubChartsOptions): Promise<string> {
+  execute(options: GitHubChartsOptions, cacheOptions: { forceRefresh?: boolean } = {}): Promise<string> {
     return getCachedValue({
       namespace: 'github',
       key: `charts-svg:${config.GITHUB_USERNAME.toLowerCase()}:years:${options.years}:months:${options.months}`,
@@ -20,6 +20,7 @@ export class ChartsCardSvgUsecase {
         const charts = await this.githubChartsUsecase.execute(options)
         return this.svgCardService.renderChartsCard(charts)
       },
+      forceRefresh: cacheOptions.forceRefresh,
     })
   }
 }

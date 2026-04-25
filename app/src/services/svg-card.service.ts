@@ -1,7 +1,7 @@
 import { formatNumber } from '../utils/number.utils'
 import { formatDateTime } from '../utils/date.utils'
 import { languageColorHex } from '../utils/color.utils'
-import { escapeXml, svgMetric, svgShell } from '../utils/xml.utils'
+import { escapeXml, svgShell } from '../utils/xml.utils'
 
 import type { GitHubStats } from '../usecases/github-stats.usecase.types'
 
@@ -61,31 +61,88 @@ function monthYearTickLabel(year: number, month: number): string {
   return `${String(month).padStart(2, '0')}/${String(year).slice(-2)}`
 }
 
+function svgStatMetric(
+  x: number,
+  y: number,
+  label: string,
+  value: string,
+  iconType: 'repos' | 'prsYear' | 'contribYear' | 'topYear' | 'totalPrs' | 'totalContribs',
+): string {
+  const iconX = x
+  const iconY = y - 8
+  const icon = (() => {
+    switch (iconType) {
+      case 'repos':
+        return `<rect x="${iconX + 1}" y="${iconY + 1}" width="4.5" height="3" rx="0.7" fill="#21262d" stroke="#58a6ff" stroke-width="1"/>
+  <rect x="${iconX + 1}" y="${iconY + 3.5}" width="8" height="6.5" rx="1.1" fill="#21262d" stroke="#58a6ff" stroke-width="1"/>`
+      case 'prsYear':
+        return `<path d="M${iconX + 1} ${iconY + 3} L${iconX + 7} ${iconY + 3} L${iconX + 5} ${iconY + 1}" stroke="#58a6ff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M${iconX + 9} ${iconY + 8} L${iconX + 3} ${iconY + 8} L${iconX + 5} ${iconY + 10}" stroke="#58a6ff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M${iconX + 7} ${iconY + 3} L${iconX + 5} ${iconY + 5}" stroke="#58a6ff" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+  <path d="M${iconX + 3} ${iconY + 8} L${iconX + 5} ${iconY + 6}" stroke="#58a6ff" stroke-width="1.3" fill="none" stroke-linecap="round"/>`
+      case 'contribYear':
+        return `<rect x="${iconX}" y="${iconY + 3}" width="3" height="7" rx="1" fill="#58a6ff"/>
+  <rect x="${iconX + 4}" y="${iconY + 1}" width="3" height="9" rx="1" fill="#58a6ff"/>
+  <rect x="${iconX + 8}" y="${iconY + 5}" width="3" height="5" rx="1" fill="#58a6ff"/>`
+      case 'topYear':
+        return `<path d="M${iconX + 5} ${iconY + 1.2} L${iconX + 6.45} ${iconY + 4.1} L${iconX + 9.4} ${iconY + 4.6} L${iconX + 7.15} ${iconY + 6.75} L${iconX + 7.95} ${iconY + 9.6} L${iconX + 5} ${iconY + 8.05} L${iconX + 2.05} ${iconY + 9.6} L${iconX + 2.85} ${iconY + 6.75} L${iconX + 0.6} ${iconY + 4.6} L${iconX + 3.55} ${iconY + 4.1} Z" fill="#f1e05a"/>`
+      case 'totalPrs':
+        return `<circle cx="${iconX + 3}" cy="${iconY + 4}" r="1.8" fill="#58a6ff"/>
+  <circle cx="${iconX + 9}" cy="${iconY + 4}" r="1.8" fill="#58a6ff"/>
+  <circle cx="${iconX + 6}" cy="${iconY + 9}" r="1.8" fill="#58a6ff"/>
+  <path d="M${iconX + 5} ${iconY + 5} L${iconX + 7} ${iconY + 5} M${iconX + 4.2} ${iconY + 5.8} L${iconX + 5.1} ${iconY + 7.5} M${iconX + 7.8} ${iconY + 5.8} L${iconX + 6.9} ${iconY + 7.5}" stroke="#58a6ff" stroke-width="0.9"/>`
+      case 'totalContribs':
+        return `<path d="M${iconX + 0.5} ${iconY + 9.5} L${iconX + 3} ${iconY + 6.5} L${iconX + 6} ${iconY + 8} L${iconX + 9.5} ${iconY + 3.5}" stroke="#58a6ff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <circle cx="${iconX + 9.5}" cy="${iconY + 3.5}" r="1.4" fill="#58a6ff"/>`
+    }
+  })()
+
+  return `${icon}
+  <text class="small" x="${x + 16}" y="${y}">${escapeXml(label)}</text>
+  <text class="value" x="${x + 16}" y="${y + 20}">${escapeXml(value)}</text>`
+}
+
 export class SvgCardService {
   renderStatsCard(stats: GitHubStats): string {
     const repositories = stats.repositories.total
-    const privateRepos = stats.repositories.private
-    const contributions = stats.contributions.total + stats.contributions.restricted
+    const yearLabel = String(stats.contributions.year)
+    const currentYearContributions = stats.contributions.total + stats.contributions.restricted
     const c1 = PAD
-    const c2 = PAD + 156
-    const c3 = PAD + 312
+    const c2 = PAD + 150
+    const c3 = PAD + 300
+    const row1 = 68
+    const row2 = 126
 
     return svgShell({
       width: CARD_W,
       height: 195,
       children: `<text class="title" x="${PAD}" y="34">${escapeXml(stats.profile.name || stats.profile.login)}'s GitHub stats</text>
-  ${svgMetric(c1, 68, 'Total repos', formatNumber(repositories))}
-  ${svgMetric(c2, 68, 'Private repos', formatNumber(privateRepos))}
-  ${svgMetric(c3, 68, 'Stars', formatNumber(stats.repositories.stargazers))}
-  ${svgMetric(c1, 126, `${stats.contributions.year} contributions`, formatNumber(contributions))}
-  ${svgMetric(c2, 126, 'Pull requests', formatNumber(stats.contributions.pullRequests))}
-  ${svgMetric(c3, 126, 'Followers', formatNumber(stats.profile.followers))}
+  ${svgStatMetric(c1, row1, 'Repos', formatNumber(repositories), 'repos')}
+  ${svgStatMetric(c2, row1, `${yearLabel} PRs`, formatNumber(stats.contributions.pullRequests), 'prsYear')}
+  ${svgStatMetric(c3, row1, `${yearLabel} contributions`, formatNumber(currentYearContributions), 'contribYear')}
+  ${svgStatMetric(c1, row2, 'Top year', String(stats.history.topYear), 'topYear')}
+  ${svgStatMetric(c2, row2, 'Total PRs', formatNumber(stats.history.totalPullRequests), 'totalPrs')}
+  ${svgStatMetric(c3, row2, 'Total contributions', formatNumber(stats.history.totalContributions), 'totalContribs')}
   <text class="footnote" text-anchor="middle" x="${CX}" y="176">Last updated at ${escapeXml(formatDateTime(stats.generatedAt))}</text>`,
     })
   }
 
   renderTopLanguagesCard(stats: GitHubStats): string {
-    const languages = stats.languages.slice(0, 6)
+    const all = stats.languages
+    const top = all.slice(0, 7)
+    const totalBytes = all.reduce((s, l) => s + l.bytes, 0)
+    const othersBytes = all.slice(7).reduce((s, l) => s + l.bytes, 0)
+    const languages =
+      othersBytes > 0 && totalBytes > 0
+        ? [
+            ...top,
+            {
+              name: 'Others',
+              bytes: othersBytes,
+              percentage: Number(((othersBytes / totalBytes) * 100).toFixed(2)),
+            },
+          ]
+        : top
     const barY = 48
     const barH = Math.round(16 * 0.7)
     const barW = CARD_W - 2 * PAD
@@ -162,11 +219,17 @@ export class SvgCardService {
   renderChartsCard(charts: GitHubCharts): string {
     const maxYearlyTotal = Math.max(1, ...charts.yearly.map((point) => point.total + point.restricted))
     const maxMonthlyTotal = Math.max(1, ...charts.monthly.map((point) => point.total + point.restricted))
-    const yearlyBarW = 48
+    const yearlyCount = charts.yearly.length
+    const yearlyAreaW = CARD_W - 2 * PAD
+    const yearlyBarW = Math.max(
+      16,
+      Math.min(48, Math.floor((yearlyAreaW - 6 * Math.max(0, yearlyCount - 1)) / Math.max(1, yearlyCount))),
+    )
+    const yearlyGap = yearlyCount > 1 ? Math.floor((yearlyAreaW - yearlyBarW * yearlyCount) / (yearlyCount - 1)) : 0
     const yearlyBars = charts.yearly
       .map((point: GitHubYearlyChartPoint, index: number) => {
         const value = point.total + point.restricted
-        const x = PAD + index * 86
+        const x = PAD + index * (yearlyBarW + yearlyGap)
         const cx = x + yearlyBarW / 2
         const height = Math.max(4, Math.round((value / maxYearlyTotal) * 76))
         const y = 126 - height

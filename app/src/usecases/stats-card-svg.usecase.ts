@@ -10,7 +10,7 @@ export class StatsCardSvgUsecase {
     private readonly svgCardService = new SvgCardService(),
   ) {}
 
-  execute(): Promise<string> {
+  execute(options: { forceRefresh?: boolean } = {}): Promise<string> {
     return getCachedValue({
       namespace: 'github',
       key: `stats-svg:${config.GITHUB_USERNAME.toLowerCase()}`,
@@ -18,6 +18,7 @@ export class StatsCardSvgUsecase {
         const stats = await this.githubStatsUsecase.execute()
         return this.svgCardService.renderStatsCard(stats)
       },
+      forceRefresh: options.forceRefresh,
     })
   }
 }

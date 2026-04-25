@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const githubChartsQuerySchema = z.object({
-  years: z.coerce.number().int().min(1).max(5).default(5),
+  years: z.coerce.number().int().min(1).max(10).default(10),
   months: z.coerce.number().int().min(1).max(60).default(12),
 })
 

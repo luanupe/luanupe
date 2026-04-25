@@ -17,22 +17,27 @@ export class CacheWarmupService {
 
   warmupInBackground(): void {
     const startedAt = new Date().toISOString()
+    const chartOptions = { years: 10, months: 12 } as const
 
-    void Promise.allSettled([
-      this.githubStatsUsecase.execute(),
-      this.statsCardSvgUsecase.execute(),
-      this.topLangsCardSvgUsecase.execute(),
-      this.githubChartsUsecase.execute({ years: 5, months: 12 }),
-      this.chartsCardSvgUsecase.execute({ years: 5, months: 12 }),
-    ]).then((results) => {
-      this.lastWarmupAt = startedAt
+    void (async () => {
+      const tasks: Array<() => Promise<unknown>> = [
+        () => this.githubStatsUsecase.execute({ forceRefresh: true }),
+        () => this.statsCardSvgUsecase.execute({ forceRefresh: true }),
+        () => this.topLangsCardSvgUsecase.execute({ forceRefresh: true }),
+        () => this.githubChartsUsecase.execute(chartOptions, { forceRefresh: true }),
+        () => this.chartsCardSvgUsecase.execute(chartOptions, { forceRefresh: true }),
+      ]
 
-      for (const result of results) {
-        if (result.status === 'rejected') {
-          console.error(result.reason)
+      for (const runTask of tasks) {
+        try {
+          await runTask()
+        } catch (error) {
+          console.error(error)
         }
       }
-    })
+
+      this.lastWarmupAt = startedAt
+    })()
   }
 
   getLastWarmupAt(): string | null {

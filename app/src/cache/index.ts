@@ -56,11 +56,24 @@ export function getCachedValue<T>({
   namespace,
   key,
   factory,
+  forceRefresh = false,
 }: {
   namespace: string
   key: string
   factory: () => Promise<T>
+  forceRefresh?: boolean
 }): Promise<T> {
+  if (forceRefresh) {
+    return factory().then(async (value) => {
+      await bento.namespace(namespace).set({
+        key,
+        value,
+        ttl: config.CACHE_TTL,
+      })
+      return value
+    })
+  }
+
   return bento.namespace(namespace).getOrSet({
     key,
     factory,

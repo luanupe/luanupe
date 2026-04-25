@@ -1,1 +1,1 @@
-*/15 * * * * wget -qO- http://127.0.0.1:3000/warmup
+*/30 * * * * wget -qO- http://127.0.0.1:3000/warmup

@@ -23,7 +23,7 @@ swap_size_mb = 512
   [[http_service.checks]]
     method = 'GET'
     path = '/health'
-    interval = '30s'
+    interval = '60s'
     timeout = '5s'
     grace_period = '30s'
 

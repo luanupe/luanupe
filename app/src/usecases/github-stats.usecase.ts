@@ -4,18 +4,21 @@ import { getCachedValue } from '../cache'
 import { debugLog, elapsedMs } from '../utils/debug.utils'
 
 import { GitHubCliService } from '../services/github-cli.service'
-import type { GitHubRepository } from '../services/github-cli.service.types'
+import type { GitHubContributionRange, GitHubContributions, GitHubRepository } from '../services/github-cli.service.types'
 
 import type { GitHubStats } from './github-stats.usecase.types'
+
+const HISTORY_YEARS = 10
 
 export class GitHubStatsUsecase {
   constructor(private readonly github = new GitHubCliService()) {}
 
-  execute(): Promise<GitHubStats> {
+  execute(options: { forceRefresh?: boolean } = {}): Promise<GitHubStats> {
     return getCachedValue({
       namespace: 'github',
       key: `stats:${config.GITHUB_USERNAME.toLowerCase()}`,
       factory: () => this.buildStats(),
+      forceRefresh: options.forceRefresh,
     })
   }
 
@@ -23,16 +26,27 @@ export class GitHubStatsUsecase {
     const startedAt = process.hrtime.bigint()
     debugLog('github stats build started')
     const prWindow = this.github.getContributionYearDateRangeYmd()
-    const [user, repositories, contributions, pullRequestsFromSearch] = await Promise.all([
-      this.github.getAuthenticatedUser(),
-      this.github.listRepositories(),
-      this.github.getContributions(config.GITHUB_USERNAME),
-      this.github.countPullRequestsOpenedByAuthorInRange(
-        config.GITHUB_USERNAME,
-        prWindow.fromYmd,
-        prWindow.toYmd,
-      ),
-    ])
+    const now = new Date()
+    const historyRanges = this.buildYearlyRanges(HISTORY_YEARS, now)
+    const historyPrFromYmd = historyRanges[0]!.from.slice(0, 10)
+    const historyPrToYmd = now.toISOString().slice(0, 10)
+    const [user, repositories, contributions, pullRequestsFromSearch, pullRequestsTenYearsSearch, yearlyHistory] =
+      await Promise.all([
+        this.github.getAuthenticatedUser(),
+        this.github.listRepositories(),
+        this.github.getContributions(config.GITHUB_USERNAME),
+        this.github.countPullRequestsOpenedByAuthorInRange(
+          config.GITHUB_USERNAME,
+          prWindow.fromYmd,
+          prWindow.toYmd,
+        ),
+        this.github.countPullRequestsOpenedByAuthorInRange(
+          config.GITHUB_USERNAME,
+          historyPrFromYmd,
+          historyPrToYmd,
+        ),
+        this.github.getContributionsByRanges(config.GITHUB_USERNAME, historyRanges),
+      ])
 
     debugLog('github stats dependencies loaded', {
       durationMs: elapsedMs(startedAt),
@@ -51,6 +65,19 @@ export class GitHubStatsUsecase {
       contributions.totalPullRequestReviewContributions +
       contributions.totalRepositoryContributions
 
+    const historyPoints = historyRanges.map((range) => {
+      const point = yearlyHistory[range.key]
+      const year = Number(range.key.replace('year-', ''))
+      const total = this.totalContributions(point)
+      return { year, total }
+    })
+    const topYear = historyPoints.reduce(
+      (best, point) => (point.total > best.total ? point : best),
+      historyPoints[0]!,
+    )
+    const totalPullRequests = pullRequestsTenYearsSearch
+    const totalContributionsTenYears = historyPoints.reduce((sum, point) => sum + point.total, 0)
+
     const stats = {
       generatedAt: new Date().toISOString(),
       profile: {
@@ -68,7 +95,7 @@ export class GitHubStatsUsecase {
         totalPrivateRepos: user.total_private_repos || 0,
       },
       repositories: this.summarizeRepos(repositories),
-      languages: this.aggregateRepositoryLanguages(repositories).slice(0, 10),
+      languages: this.aggregateRepositoryLanguages(repositories),
       contributions: {
         year: this.github.getCurrentYear(),
         total: contributionsTotal,
@@ -78,6 +105,12 @@ export class GitHubStatsUsecase {
         pullRequestReviews: contributions.totalPullRequestReviewContributions,
         repositories: contributions.totalRepositoryContributions,
         restricted: contributions.restrictedContributionsCount,
+      },
+      history: {
+        years: HISTORY_YEARS,
+        topYear: topYear.year,
+        totalPullRequests,
+        totalContributions: totalContributionsTenYears,
       },
     }
 
@@ -130,6 +163,35 @@ export class GitHubStatsUsecase {
         watchers: 0,
         openIssues: 0,
       },
+    )
+  }
+
+  private buildYearlyRanges(years: number, now: Date): GitHubContributionRange[] {
+    const currentYear = now.getUTCFullYear()
+    const startYear = currentYear - years + 1
+    const yearNumbers = Array.from({ length: years }, (_, index) => startYear + index)
+
+    return yearNumbers.map((year) => {
+      const from = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0))
+      const yearEnd = new Date(Date.UTC(year + 1, 0, 1, 0, 0, 0, 0))
+      const to = year === currentYear ? now : yearEnd
+
+      return {
+        key: `year-${year}`,
+        from: from.toISOString(),
+        to: to.toISOString(),
+      }
+    })
+  }
+
+  private totalContributions(contributions: GitHubContributions): number {
+    return (
+      contributions.totalCommitContributions +
+      contributions.totalIssueContributions +
+      contributions.totalPullRequestContributions +
+      contributions.totalPullRequestReviewContributions +
+      contributions.totalRepositoryContributions +
+      contributions.restrictedContributionsCount
     )
   }
 }

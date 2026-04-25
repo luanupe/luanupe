@@ -38,4 +38,10 @@ export interface GitHubStats {
     repositories: number
     restricted: number
   }
+  history: {
+    years: number
+    topYear: number
+    totalPullRequests: number
+    totalContributions: number
+  }
 }

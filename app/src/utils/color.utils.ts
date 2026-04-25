@@ -110,6 +110,9 @@ function fallbackColor(name: string): string {
  */
 export function languageColorHex(name: string): string {
   const raw = name.trim().toLowerCase()
+  if (raw === 'others') {
+    return '#6e7681'
+  }
   const fromAlias = ALIASES[raw]
   if (fromAlias && LINGUIST_HEX[fromAlias]) {
     return LINGUIST_HEX[fromAlias]

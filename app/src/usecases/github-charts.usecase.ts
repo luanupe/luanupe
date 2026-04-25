@@ -15,11 +15,12 @@ import type {
 export class GitHubChartsUsecase {
   constructor(private readonly github = new GitHubCliService()) {}
 
-  execute(options: GitHubChartsOptions): Promise<GitHubCharts> {
+  execute(options: GitHubChartsOptions, cacheOptions: { forceRefresh?: boolean } = {}): Promise<GitHubCharts> {
     return getCachedValue({
       namespace: 'github',
       key: `charts:${config.GITHUB_USERNAME.toLowerCase()}:years:${options.years}:months:${options.months}`,
       factory: () => this.buildCharts(options),
+      forceRefresh: cacheOptions.forceRefresh,
     })
   }
 
