@@ -10,6 +10,6 @@ export function healthController(_request: Request, response: Response): void {
     name: packageJson.name,
     version: packageJson.version,
     uptime: Math.round(process.uptime()),
-    lastCacheWarmupAt: cacheWarmupService.getLastWarmupAt(),
+    warmup: cacheWarmupService.getLastWarmupAt(),
   })
 }

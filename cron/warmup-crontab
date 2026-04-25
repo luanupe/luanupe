@@ -1,1 +1,2 @@
-*/30 * * * * wget -qO- http://127.0.0.1:3000/warmup
+# Every 2 hours (on the hour: 0, 2, 4, … 22).
+0 */2 * * * wget -qO- http://127.0.0.1:3000/warmup

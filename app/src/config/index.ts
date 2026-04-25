@@ -10,7 +10,7 @@ function envTruthy(value: unknown): boolean {
 
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
-  CACHE_TTL: z.string().min(1).default('1h'),
+  CACHE_TTL: z.string().min(1).default('6h'),
   APP_ENV: z.enum(['dev', 'prod']).default('dev'),
   GITHUB_USERNAME: z.string().min(1),
   GITHUB_TOKEN: z.string().min(1),

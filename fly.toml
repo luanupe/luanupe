@@ -10,7 +10,7 @@ swap_size_mb = 512
   APP_ENV = 'prod'
   DEBUG_LOGS = 'false'
   PORT = '3000'
-  CACHE_TTL = '1h'
+  CACHE_TTL = '6h'
 
 [http_service]
   internal_port = 8080
