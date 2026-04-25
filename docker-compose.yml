@@ -9,6 +9,9 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      NODE_OPTIONS: "-r newrelic"
+      NEW_RELIC_CONFIG_FILENAME: /app/newrelic.cjs
     volumes:
       - ./app/src:/app/src
       - ./app/tsconfig.json:/app/tsconfig.json
