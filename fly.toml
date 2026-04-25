@@ -1,0 +1,29 @@
+app = 'luanupe'
+primary_region = 'gru'
+swap_size_mb = 512
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  CACHE_TTL = '1h'
+  NODE_ENV = 'production'
+  PORT = '3000'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+  [[http_service.checks]]
+    method = 'GET'
+    path = '/health'
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '30s'
+
+[[vm]]
+  size = 'shared-cpu-1x'

@@ -1,0 +1,12 @@
+.git
+.gitignore
+.cursor
+.DS_Store
+Dockerfile
+README.md
+node_modules
+**/node_modules
+app/dist
+**/.env
+npm-debug.log*
+fly.toml
