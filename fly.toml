@@ -6,9 +6,10 @@ swap_size_mb = 512
   dockerfile = 'Dockerfile'
 
 [env]
-  CACHE_TTL = '1h'
   NODE_ENV = 'production'
+  DEBUG_LOGS = 'false'
   PORT = '3000'
+  CACHE_TTL = '1h'
 
 [http_service]
   internal_port = 8080
