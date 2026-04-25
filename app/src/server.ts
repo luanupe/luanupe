@@ -1,10 +1,11 @@
 import express, { type NextFunction, type Request, type Response } from 'express'
 
 import { config } from './config'
+import { debugLog } from './utils/debug.utils'
+import { serializeError } from './utils/sanitize.utils'
 import { NewRelic } from './observability/newrelic'
 import { healthRouter } from './routes/health.router'
 import { statsRouter } from './routes/stats.router'
-import { serializeError } from './utils/sanitize.utils'
 
 const app = express()
 
@@ -53,5 +54,5 @@ app.use((error: unknown, _request: Request, response: Response, _next: NextFunct
 })
 
 app.listen(config.PORT, '0.0.0.0', () => {
-  console.log(`GitHub stats API listening on port ${config.PORT}`)
+  debugLog('GitHub stats API listening', { port: config.PORT })
 })

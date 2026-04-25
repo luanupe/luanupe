@@ -4,9 +4,9 @@ import { BentoCache, bentostore } from 'bentocache'
 import { memoryDriver } from 'bentocache/drivers/memory'
 
 import { config } from '../config'
-import { NewRelic } from '../observability/newrelic'
 import { debugLog } from '../utils/debug.utils'
 import { sanitizeErrorValue, serializeError } from '../utils/sanitize.utils'
+import { NewRelic } from '../observability/newrelic'
 
 const cacheEmitter = new EventEmitter()
 

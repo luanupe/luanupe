@@ -2,8 +2,10 @@ import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 
 import { config } from '../config'
+
 import { flattenPaginatedResponse } from '../utils/array.utils'
 import { debugLog, elapsedMs } from '../utils/debug.utils'
+
 import type {
   GitHubContributionRange,
   GitHubContributions,

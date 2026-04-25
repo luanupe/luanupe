@@ -1,8 +1,11 @@
-import { getCachedValue } from '../cache'
 import { config } from '../config'
+import { getCachedValue } from '../cache'
+
+import { debugLog, elapsedMs } from '../utils/debug.utils'
+
 import { GitHubCliService } from '../services/github-cli.service'
 import type { GitHubRepository } from '../services/github-cli.service.types'
-import { debugLog, elapsedMs } from '../utils/debug.utils'
+
 import type { GitHubStats } from './github-stats.usecase.types'
 
 export class GitHubStatsUsecase {

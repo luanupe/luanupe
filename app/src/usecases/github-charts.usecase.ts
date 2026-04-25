@@ -1,14 +1,15 @@
-import { getCachedValue } from '../cache'
 import { config } from '../config'
+import { getCachedValue } from '../cache'
+
+import { debugLog, elapsedMs } from '../utils/debug.utils'
+
 import { GitHubCliService } from '../services/github-cli.service'
 import type { GitHubContributionRange, GitHubContributions } from '../services/github-cli.service.types'
-import { debugLog, elapsedMs } from '../utils/debug.utils'
+
 import type {
   GitHubChartPoint,
   GitHubCharts,
   GitHubChartsOptions,
-  GitHubMonthlyChartPoint,
-  GitHubYearlyChartPoint,
 } from './github-charts.usecase.types'
 
 export class GitHubChartsUsecase {

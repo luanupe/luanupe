@@ -1,5 +1,6 @@
-import { getCachedValue } from '../cache'
 import { config } from '../config'
+import { getCachedValue } from '../cache'
+
 import { SvgCardService } from '../services/svg-card.service'
 import { GitHubStatsUsecase } from './github-stats.usecase'
 

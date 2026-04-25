@@ -1,7 +1,9 @@
-import { getCachedValue } from '../cache'
 import { config } from '../config'
+import { getCachedValue } from '../cache'
+
 import { SvgCardService } from '../services/svg-card.service'
 import { GitHubChartsUsecase } from './github-charts.usecase'
+
 import type { GitHubChartsOptions } from './github-charts.usecase.types'
 
 export class ChartsCardSvgUsecase {

@@ -6,7 +6,6 @@ import {
   getStatsController,
   getStatsSvgController,
   getTopLangsSvgController,
-  warmupController,
 } from '../controllers/stats.controller'
 
 export const statsRouter = Router()
