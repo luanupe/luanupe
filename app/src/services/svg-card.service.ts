@@ -199,7 +199,7 @@ export class SvgCardService {
       children: `<text class="title" x="${PAD}" y="34">Contribution charts</text>
   <text class="label" x="${PAD}" y="58">Yearly evolution (${charts.range.years} years)</text>
   ${yearlyBars}
-  <text class="label" x="${PAD}" y="178">Monthly evolution (last ${charts.range.months} months, showing up to 12)</text>
+  <text class="label" x="${PAD}" y="178">Monthly evolution (last ${charts.range.months} months)</text>
   ${monthBars}
   <text class="footnote" text-anchor="middle" x="${CX}" y="252">Last updated at ${escapeXml(formatDateTime(charts.generatedAt))}</text>`,
     })

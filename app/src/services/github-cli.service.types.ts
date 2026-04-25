@@ -35,17 +35,6 @@ export interface GitHubContributions {
   restrictedContributionsCount: number
 }
 
-export interface GitHubDetailedContributions extends GitHubContributions {
-  detailedCommitContributions: number
-  detailedIssueContributions: number
-  detailedPullRequestContributions: number
-  detailedPullRequestReviewContributions: number
-}
-
-export interface GitHubSearchResponse {
-  total_count: number
-}
-
 export interface GitHubContributionRange {
   key: string
   from: string

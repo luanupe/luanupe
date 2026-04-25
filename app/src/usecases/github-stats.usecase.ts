@@ -22,7 +22,7 @@ export class GitHubStatsUsecase {
     const [user, repositories, contributions] = await Promise.all([
       this.github.getAuthenticatedUser(),
       this.github.listRepositories(),
-      this.github.getDetailedContributions(config.GITHUB_USERNAME),
+      this.github.getContributions(config.GITHUB_USERNAME),
     ])
 
     debugLog('github stats dependencies loaded', {
@@ -34,11 +34,12 @@ export class GitHubStatsUsecase {
       throw new Error('GITHUB_USERNAME does not match the authenticated GitHub token owner')
     }
 
+    // Same five fields as charts (contributionsCollection) so YTD matches the current-year bar.
     const contributionsTotal =
-      contributions.detailedCommitContributions +
-      contributions.detailedIssueContributions +
-      contributions.detailedPullRequestContributions +
-      contributions.detailedPullRequestReviewContributions +
+      contributions.totalCommitContributions +
+      contributions.totalIssueContributions +
+      contributions.totalPullRequestContributions +
+      contributions.totalPullRequestReviewContributions +
       contributions.totalRepositoryContributions
 
     const stats = {
@@ -62,10 +63,10 @@ export class GitHubStatsUsecase {
       contributions: {
         year: this.github.getCurrentYear(),
         total: contributionsTotal,
-        commits: contributions.detailedCommitContributions,
-        issues: contributions.detailedIssueContributions,
-        pullRequests: contributions.detailedPullRequestContributions,
-        pullRequestReviews: contributions.detailedPullRequestReviewContributions,
+        commits: contributions.totalCommitContributions,
+        issues: contributions.totalIssueContributions,
+        pullRequests: contributions.totalPullRequestContributions,
+        pullRequestReviews: contributions.totalPullRequestReviewContributions,
         repositories: contributions.totalRepositoryContributions,
         restricted: contributions.restrictedContributionsCount,
       },

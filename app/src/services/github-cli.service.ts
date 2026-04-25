@@ -7,10 +7,8 @@ import { debugLog, elapsedMs } from '../utils/debug.utils'
 import type {
   GitHubContributionRange,
   GitHubContributions,
-  GitHubDetailedContributions,
   GitHubLanguageMap,
   GitHubRepository,
-  GitHubSearchResponse,
   GitHubUser,
 } from './github-cli.service.types'
 
@@ -99,27 +97,6 @@ export class GitHubCliService {
     return this.getContributionsByRange(username, CONTRIBUTIONS_FROM, new Date().toISOString())
   }
 
-  async getDetailedContributions(username: string): Promise<GitHubDetailedContributions> {
-    const to = new Date().toISOString()
-    const fromDate = CONTRIBUTIONS_FROM.slice(0, 10)
-    const toDate = to.slice(0, 10)
-    const [baseContributions, commits, issues, pullRequests, pullRequestReviews] = await Promise.all([
-      this.getContributionsByRange(username, CONTRIBUTIONS_FROM, to),
-      this.searchCount('/search/commits', `author:${username} author-date:${fromDate}..${toDate}`),
-      this.searchCount('/search/issues', `author:${username} type:issue created:${fromDate}..${toDate}`),
-      this.searchCount('/search/issues', `author:${username} type:pr created:${fromDate}..${toDate}`),
-      this.searchCount('/search/issues', `reviewed-by:${username} type:pr updated:${fromDate}..${toDate}`),
-    ])
-
-    return {
-      ...baseContributions,
-      detailedCommitContributions: commits,
-      detailedIssueContributions: issues,
-      detailedPullRequestContributions: pullRequests,
-      detailedPullRequestReviewContributions: pullRequestReviews,
-    }
-  }
-
   async getContributionsByRange(
     username: string,
     from: string,
@@ -202,19 +179,5 @@ export class GitHubCliService {
 
   getCurrentYear(): number {
     return CURRENT_YEAR
-  }
-
-  private async searchCount(path: string, query: string): Promise<number> {
-    const response = await runGhApi<GitHubSearchResponse>([
-      path,
-      '--method',
-      'GET',
-      '-f',
-      `q=${query}`,
-      '-f',
-      'per_page=1',
-    ])
-
-    return response.total_count
   }
 }
