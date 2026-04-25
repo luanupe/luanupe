@@ -53,8 +53,9 @@ Durante a graduação, fui monitor de disciplinas de programação e usei gamifi
 
 <div align="center">
 
-![Luan's GitHub stats](https://github-readme-stats.vercel.app/api?username=luanupe&show_icons=true&theme=transparent&hide_border=true&rank_icon=github&include_all_commits=true&count_private=true)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=luanupe&layout=compact&theme=transparent&hide_border=true&include_all_commits=true&count_private=true)
+![Luan's GitHub stats](https://luanupe.fly.dev/api/stats.svg)
+![Top Langs](https://luanupe.fly.dev/api/top-langs.svg)
+![Contribution Charts](https://luanupe.fly.dev/api/charts.svg)
 
 </div>
 
