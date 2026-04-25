@@ -1,6 +1,6 @@
 <div align="center">
 
-# Oi, eu sou Luan Augusto
+# Oi, eu sou Luan!
 
 **Senior Software Engineer @ InvestoETF**  
 Full-stack developer focado em produtos web e mobile com **JavaScript**, **TypeScript**, **Node.js**, **React**, **React Native**, **PHP**, **Laravel** e **Java**.
@@ -12,12 +12,12 @@ Full-stack developer focado em produtos web e mobile com **JavaScript**, **TypeS
 
 ## Sobre mim
 
-Sou desenvolvedor desde cedo, quando comecei criando blogs, pequenos sites em PHP, MySQL, HTML e CSS, e depois mergulhei em jogos com Flash, ActionScript 3.0 e back-end em Java.
+Sou desenvolvedor desde criança, quando comecei criando blogs, pequenos sites em PHP, MySQL; depois mergulhei em jogos com Flash, ActionScript 3.0 e back-end em Java.
 
-Hoje atuo como full-stack engineer, construindo aplicações escaláveis para web e mobile, integrações com inteligência artificial, APIs, dashboards administrativos e soluções sob demanda. Gosto de trabalhar perto do produto, entender o problema real e transformar ideias em software bem acabado.
+Hoje atuo como full-stack engineer, construindo aplicações escaláveis para web e mobile, integrações com inteligência artificial, APIs e soluções sob demanda. Gosto de trabalhar perto do produto, entender o problema real e transformar ideias em software bem acabado.
 
 - Atualmente trabalho como **Senior Software Engineer na Investo**.
-- Tenho experiência com **React**, **Next.js**, **Node.js**, **TypeScript**, **React Native**, **PHP**, **Laravel**, **Java**, **Docker**, **MySQL**, **SQL Server** e integrações com LLMs.
+- Tenho experiência com **React**, **Next.js**, **Node.js**, **TypeScript**, **React Native**, **PHP**, **Laravel**, **Java**, **Docker**, **MySQL**, **Postgres** e integrações com LLMs.
 - Também atuo como freelance, entregando landing pages, dashboards, aplicativos, APIs, automações, CI/CD e infraestrutura em plataformas como DigitalOcean e Fly.io.
 - Sou formado em **Sistemas de Informação pela Universidade de Pernambuco** e fui laureado pela instituição.
 
@@ -38,10 +38,10 @@ Hoje atuo como full-stack engineer, construindo aplicações escaláveis para we
 ## Experiência em destaque
 
 **Investo**  
-Atuo como Senior Software Engineer em produtos financeiros, contribuindo em arquitetura, desenvolvimento full-stack e evolução de plataformas com foco em qualidade, performance e escalabilidade.
+Atuo como Senior Software Engineer em produtos financeiros, desenvolvimento full-stack e evolução de plataformas com foco em qualidade, performance e escalabilidade.
 
 **Afya / PEBMED**  
-Trabalhei em iniciativas de inovação usando IA generativa e modelos de linguagem, além de projetos back-end e front-end com React, Next.js, Node.js, TypeScript, Docker e Java. Também participei do desenvolvimento de um chatbot de atendimento para WhatsApp integrado a Zendesk e Braze.
+Trabalhei em iniciativas de inovação usando IA generativa e modelos de linguagem, além de projetos back-end e front-end com React, Next.js, Node.js, TypeScript, Docker. Também participei do desenvolvimento de um chatbot de atendimento para WhatsApp integrado a Zendesk e Braze.
 
 **Prefeitura de Caruaru**  
 Liderei tecnicamente uma squad de desenvolvimento e participei de cerca de 15 sistemas públicos, incluindo Diário Oficial, acompanhamento de licitações, gestão de frotas, controle de serviços à população, cadastro cultural e sistemas internos.
@@ -51,11 +51,13 @@ Durante a graduação, fui monitor de disciplinas de programação e usei gamifi
 
 ## GitHub
 
-<img src="https://luanupe.fly.dev/api/stats.svg" width="100%" alt="Luan's GitHub stats" />
-
-<img src="https://luanupe.fly.dev/api/charts.svg" width="100%" alt="Contribution charts" />
-
-<img src="https://luanupe.fly.dev/api/top-langs.svg" width="100%" alt="Top languages" />
+<table>
+  <tr>
+    <td width="33.33%" valign="top"><img src="https://luanupe.fly.dev/api/stats.svg" width="100%" alt="Luan's GitHub stats" /></td>
+    <td width="33.33%" valign="top"><img src="https://luanupe.fly.dev/api/charts.svg" width="100%" alt="Contribution charts" /></td>
+    <td width="33.33%" valign="top"><img src="https://luanupe.fly.dev/api/top-langs.svg" width="100%" alt="Top languages" /></td>
+  </tr>
+</table>
 
 ## Vamos conversar?
 
