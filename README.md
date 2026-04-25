@@ -55,19 +55,19 @@ Durante a graduação, fui monitor de disciplinas de programação e usei gamifi
 <summary><strong>Métricas do GitHub</strong></summary>
 
 <p align="center">
-  <img src="https://luanupe.fly.dev/api/stats.svg" width="820" alt="Estatísticas do GitHub" />
+  <img src="https://luanupe.fly.dev/api/stats.svg?v=1" width="820" alt="Estatísticas do GitHub" />
 </p>
 
 <hr />
 
 <p align="center">
-  <img src="https://luanupe.fly.dev/api/charts.svg" width="820" alt="Gráficos de contribuições" />
+  <img src="https://luanupe.fly.dev/api/charts.svg?v=1" width="820" alt="Gráficos de contribuições" />
 </p>
 
 <hr />
 
 <p align="center">
-  <img src="https://luanupe.fly.dev/api/top-langs.svg" width="820" alt="Principais linguagens no GitHub" />
+  <img src="https://luanupe.fly.dev/api/top-langs.svg?v=1" width="820" alt="Principais linguagens no GitHub" />
 </p>
 
 </details>
