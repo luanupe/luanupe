@@ -17,7 +17,7 @@ Sou desenvolvedor desde criança, quando comecei criando blogs, pequenos sites e
 Hoje atuo como full-stack engineer, construindo aplicações escaláveis para web e mobile, integrações com inteligência artificial, APIs e soluções sob demanda. Gosto de trabalhar perto do produto, entender o problema real e transformar ideias em software bem acabado.
 
 - Atualmente trabalho como **Senior Software Engineer na Investo**.
-- Tenho experiência com **React**, **Next.js**, **Node.js**, **TypeScript**, **React Native**, **PHP**, **Laravel**, **Java**, **Docker**, **MySQL**, **Postgres** e integrações com LLMs.
+- Tenho experiência com **React**, **Next.js**, **Node.js**, **TypeScript**, **React Native**, **PHP**, **Laravel**, **Java**, **Docker**, **MySQL** e **Postgres**, além de sólida experiência em integrações com **LLMs**, **LangChain** e arquiteturas baseadas em **queues**.
 - Também atuo como freelance, entregando landing pages, dashboards, aplicativos, APIs, automações, CI/CD e infraestrutura em plataformas como DigitalOcean e Fly.io.
 - Sou formado em **Sistemas de Informação pela Universidade de Pernambuco** e fui laureado pela instituição.
 
