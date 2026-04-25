@@ -1,6 +1,7 @@
 'use strict'
 
 const hasLicenseKey = Boolean(process.env.NEW_RELIC_LICENSE_KEY)
+const appEnvironment = process.env.APP_ENV || 'dev'
 
 exports.config = {
   app_name: [process.env.NEW_RELIC_APP_NAME],
@@ -12,6 +13,9 @@ exports.config = {
   logging: {
     enabled: hasLicenseKey,
     level: 'info',
+  },
+  labels: {
+    environment: appEnvironment,
   },
   allow_all_headers: false,
   attributes: {

@@ -5,7 +5,7 @@ import { sanitizeErrorValue } from '../utils/sanitize.utils'
 const agent = require('newrelic') as NewRelicAgent
 
 interface NewRelicAgent {
-  addCustomEvent?: (eventType: string, attributes: Record<string, unknown>) => void
+  recordCustomEvent?: (eventType: string, attributes: Record<string, unknown>) => void
   noticeError?: (error: Error, attributes?: Record<string, unknown>) => void
 }
 
@@ -18,7 +18,13 @@ export class NewRelic {
       return
     }
 
-    agent?.addCustomEvent?.(eventType, this.sanitizeAttributes(attributes))
+    const sanitizedAttributes = this.sanitizeAttributes({
+      ...attributes,
+      environment: config.APP_ENV,
+      appName: config.NEW_RELIC_APP_NAME || 'unknown',
+    })
+
+    agent?.recordCustomEvent?.(eventType, sanitizedAttributes)
   }
 
   static noticeError(error: Error, attributes: Record<string, unknown> = {}): void {
@@ -26,9 +32,15 @@ export class NewRelic {
       return
     }
 
+    const sanitizedAttributes = this.sanitizeAttributes({
+      ...attributes,
+      environment: config.APP_ENV,
+      appName: config.NEW_RELIC_APP_NAME || 'unknown',
+    })
+
     const safeError = new Error(sanitizeErrorValue(error.message))
     safeError.stack = error.stack ? sanitizeErrorValue(error.stack) : undefined
-    agent?.noticeError?.(safeError, this.sanitizeAttributes(attributes))
+    agent?.noticeError?.(safeError, sanitizedAttributes)
   }
 
   private static isEnabled(): boolean {

@@ -11,20 +11,34 @@ import { NewRelic } from '../observability/newrelic'
 const cacheEmitter = new EventEmitter()
 
 cacheEmitter.on('cache:hit', (data: { key?: string; store?: string }) => {
-  debugLog('cache hit', { key: sanitizeErrorValue(data.key || ''), store: data.store || 'unknown' })
+  const sanitizedKey = sanitizeErrorValue(data.key || '')
+  const sanitizedStore = data.store || 'unknown'
+
+  debugLog('cache hit', {
+    key: sanitizedKey,
+    store: sanitizedStore,
+  })
+
   NewRelic.recordCustomEvent('BentoCacheEvent', {
     result: 'hit',
-    key: sanitizeErrorValue(data.key || ''),
-    store: data.store || 'unknown',
+    key: sanitizedKey,
+    store: sanitizedStore,
   })
 })
 
 cacheEmitter.on('cache:miss', (data: { key?: string; store?: string }) => {
-  debugLog('cache miss', { key: sanitizeErrorValue(data.key || ''), store: data.store || 'unknown' })
+  const sanitizedKey = sanitizeErrorValue(data.key || '')
+  const sanitizedStore = data.store || 'unknown'
+
+  debugLog('cache miss', {
+    key: sanitizedKey,
+    store: sanitizedStore,
+  })
+
   NewRelic.recordCustomEvent('BentoCacheEvent', {
     result: 'miss',
-    key: sanitizeErrorValue(data.key || ''),
-    store: data.store || 'unknown',
+    key: sanitizedKey,
+    store: sanitizedStore,
   })
 })
 
@@ -33,9 +47,7 @@ export const bento = new BentoCache({
   emitter: cacheEmitter,
   stores: {
     githubStats: bentostore().useL1Layer(
-      memoryDriver({
-        maxSize: '10mb',
-      }),
+      memoryDriver({ maxSize: '25mb' }),
     ),
   },
 })
@@ -55,7 +67,6 @@ export function getCachedValue<T>({
     ttl: config.CACHE_TTL,
     onFactoryError: (error) => {
       const details = serializeError(error)
-
       console.error(JSON.stringify(details))
       NewRelic.noticeError(error)
     },

@@ -16,7 +16,6 @@ export class TopLangsCardSvgUsecase {
       key: `top-langs-svg:${config.GITHUB_USERNAME.toLowerCase()}`,
       factory: async () => {
         const stats = await this.githubStatsUsecase.execute()
-
         return this.svgCardService.renderTopLanguagesCard(stats)
       },
     })

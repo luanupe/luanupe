@@ -18,7 +18,6 @@ export class ChartsCardSvgUsecase {
       key: `charts-svg:${config.GITHUB_USERNAME.toLowerCase()}:years:${options.years}:months:${options.months}`,
       factory: async () => {
         const charts = await this.githubChartsUsecase.execute(options)
-
         return this.svgCardService.renderChartsCard(charts)
       },
     })

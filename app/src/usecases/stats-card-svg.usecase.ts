@@ -16,7 +16,6 @@ export class StatsCardSvgUsecase {
       key: `stats-svg:${config.GITHUB_USERNAME.toLowerCase()}`,
       factory: async () => {
         const stats = await this.githubStatsUsecase.execute()
-
         return this.svgCardService.renderStatsCard(stats)
       },
     })

@@ -15,10 +15,6 @@ export class CacheWarmupService {
     readonly chartsCardSvgUsecase = new ChartsCardSvgUsecase(githubChartsUsecase),
   ) {}
 
-  getLastWarmupAt(): string | null {
-    return this.lastWarmupAt
-  }
-
   warmupInBackground(): void {
     const startedAt = new Date().toISOString()
 
@@ -37,6 +33,10 @@ export class CacheWarmupService {
         }
       }
     })
+  }
+
+  getLastWarmupAt(): string | null {
+    return this.lastWarmupAt
   }
 }
 

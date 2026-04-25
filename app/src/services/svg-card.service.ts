@@ -1,6 +1,6 @@
 import { formatNumber } from '../utils/number.utils'
 import { formatDateTime } from '../utils/date.utils'
-import { languageColorHex } from '../utils/language-color.utils'
+import { languageColorHex } from '../utils/color.utils'
 import { escapeXml, svgMetric, svgShell } from '../utils/xml.utils'
 
 import type { GitHubStats } from '../usecases/github-stats.usecase.types'

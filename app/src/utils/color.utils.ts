@@ -83,8 +83,8 @@ const ALIASES: Record<string, keyof typeof LINGUIST_HEX> = {
   rb: 'ruby',
   rs: 'rust',
   golang: 'go',
-  'objective-c': 'objectivec',
   objc: 'objectivec',
+  'objective-c': 'objectivec',
 }
 
 function hashString(value: string): number {
