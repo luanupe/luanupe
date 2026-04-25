@@ -51,13 +51,11 @@ Durante a graduação, fui monitor de disciplinas de programação e usei gamifi
 
 ## GitHub
 
-<div align="center">
+<img src="https://luanupe.fly.dev/api/stats.svg" width="100%" alt="Luan's GitHub stats" />
 
-![Luan's GitHub stats](https://luanupe.fly.dev/api/stats.svg)
-![Top Langs](https://luanupe.fly.dev/api/top-langs.svg)
-![Contribution Charts](https://luanupe.fly.dev/api/charts.svg)
+<img src="https://luanupe.fly.dev/api/charts.svg" width="100%" alt="Contribution charts" />
 
-</div>
+<img src="https://luanupe.fly.dev/api/top-langs.svg" width="100%" alt="Top languages" />
 
 ## Vamos conversar?
 
